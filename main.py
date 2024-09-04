@@ -8,9 +8,9 @@ ax1, ay, ax2 = 70, 90, 230
 bx1, by, bx2 = 15, 125, 225
 distance = 9.144  # Distance between lines 'a' and 'b' in meters
 
-def Speed_Cal(time_sec):
-    if time_sec > 0:
-        speed_mps = distance / time_sec  # Speed in meters per second
+def Speed_Cal(time):
+    if time > 0:
+        speed_mps = distance / time  # Speed in meters per second
         speed_kmph = speed_mps * 3.6  # Convert to kilometers per hour
         return speed_kmph
     return 0
