@@ -12,8 +12,7 @@ def Speed_Cal(time):
     if time > 0:
         speed_mps = distance / time  # Speed in meters per second
         speed_kmph = speed_mps * 3.6  # Convert to kilometers per hour
-        return speed_kmph
-    return 0
+    return speed_kmph
 
 i = 1
 start_time = 0
