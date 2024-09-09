@@ -9,6 +9,7 @@ video_src = 'data/video3.MP4'
 # Define line coordinates and distance between lines 'a' and 'b' in meters
 ax1, ay, ax2 = 70, 90, 230
 bx1, by, bx2 = 15, 125, 225
+
 distance = 9.144
 
 def Speed_Cal(time):
@@ -31,7 +32,7 @@ car_detected_b = False
 fps = cap.get(cv2.CAP_PROP_FPS)
 delay = int(1000 / fps)  # Delay in milliseconds
 
-# Define ROI coordinates (top-left and bottom-right)
+# Define Region of intrest (ROI) coordinates (top-left and bottom-right)
 roi_x1, roi_y1 = 30, 50
 roi_x2, roi_y2 = 240, 150
 
@@ -43,12 +44,14 @@ while True:
     # Convert to grayscale and apply Gaussian blur for better thresholding
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     blurred = cv2.GaussianBlur(gray, (15, 15), 0)  # Reduce noise
+    image= blurred
+
     
     # Apply binary thresholding to create mask
-    _, mask = cv2.threshold(blurred, 200, 255, cv2.THRESH_BINARY)
+    _, mask = cv2.threshold(image, 200, 255, cv2.THRESH_BINARY)
 
     # Create a mask for the ROI
-    roi_mask = np.zeros_like(gray)
+    roi_mask = np.zeros_like(gray) #This line creates a mask (roi_mask) that has the same dimensions as the input image (gray).
     roi_mask[roi_y1:roi_y2, roi_x1:roi_x2] = 255
 
     # Apply ROI mask to the thresholded mask
@@ -57,14 +60,14 @@ while True:
     # Apply ROI mask to the original image
     masked_img = cv2.bitwise_and(img, img, mask=roi_mask)
 
-    # Detect cars in the blurred image
-    cars = car_cascade.detectMultiScale(blurred, 1.1, 2)
+    # Detect cars in the blurred image "a pre-trained Haar Cascade Classifier"
+    cars = car_cascade.detectMultiScale(image, 1.1, 2)
 
     # Draw reference lines on the original image
     cv2.line(img, (ax1, ay), (ax2, ay), (255, 0, 0), 2)
     cv2.line(img, (bx1, by), (bx2, by), (255, 0, 0), 2)
 
-    for (x, y, w, h) in cars:
+    for x, y, w, h in cars:
         cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 1)
         center_y = int((y + y + h) / 2)
 
